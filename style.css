@@ -1,12 +1,13 @@
 :root {
-    --bg-color: #F8F9FA; /* Jda och kulrang/oq fon */
-    --text-primary: #111111; /* Qop qora matn */
-    --text-secondary: #6B7280; /* Yarim kulrang matn */
-    --btn-bg: #111111; /* Qop qora tugmalar */
-    --btn-text: #FFFFFF; /* Oq tugma matni */
-    --container-bg: #FFFFFF; /* Toza oq karta */
-    --font-main: 'Outfit', sans-serif;
-    --border-color: #E5E7EB;
+    --bg-color: #000000; /* Pure black background */
+    --text-primary: #FAFAFA; /* Zinc-50 */
+    --text-secondary: #A1A1AA; /* Zinc-400 */
+    --card-bg: rgba(24, 24, 27, 0.4); /* Zinc-900 / 40% */
+    --card-border: rgba(255, 255, 255, 0.08); /* Faint white border */
+    --card-hover-bg: rgba(39, 39, 42, 0.6); /* Zinc-800 / 60% */
+    --card-hover-border: rgba(255, 255, 255, 0.2); 
+    --font-main: 'Inter', sans-serif;
+    --accent: #E4E4E7; /* Zinc-200 */
 }
 
 * {
@@ -24,46 +25,78 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 40px 20px;
+    padding: 60px 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background effects imitating Aceternity */
+.background-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+    /* Dot grid setup */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 24px 24px;
+    /* Masking to fade out at edges */
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+}
+
+.background-effect::after {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: 10%;
+    width: 80%;
+    height: 60%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05), transparent 60%);
+    filter: blur(60px);
 }
 
 #app-container {
     width: 100%;
-    max-width: 480px;
-    background: var(--container-bg);
-    padding: 40px 20px;
-    border-radius: 32px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+    max-width: 500px;
+    background: transparent;
+    padding: 20px 0;
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 /* Central Hub Styles */
 #central-hub {
-    margin-bottom: 35px;
-    animation: fadeIn 0.8s ease-out;
+    margin-bottom: 48px;
+    animation: fadeSlideDown 0.8s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
+@keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .profile-container {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 104px;
+    height: 104px;
     margin: 0 auto 24px;
-    padding: 6px;
+    padding: 4px;
     border-radius: 50%;
-    background: #FFFFFF;
-    border: 2px solid var(--text-primary);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease, border-color 0.4s ease;
 }
 
 .profile-container:hover {
     transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .upload-overlay {
@@ -77,6 +110,7 @@ body {
     border-radius: 50%;
     opacity: 0;
     transition: opacity 0.3s;
+    backdrop-filter: blur(2px);
     z-index: 10;
 }
 
@@ -86,8 +120,8 @@ body {
 
 .camera-icon {
     color: white;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
 }
 
 .profile-img {
@@ -98,18 +132,19 @@ body {
 }
 
 .title {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     margin-bottom: 8px;
     color: var(--text-primary);
 }
 
 .subtitle {
     color: var(--text-secondary);
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 400;
     padding: 0 10px;
+    letter-spacing: -0.01em;
 }
 
 /* Links Container Styles */
@@ -117,70 +152,101 @@ body {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    animation: fadeIn 1s ease-out;
+    animation: fadeSlideUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .link-card {
     display: flex;
     align-items: center;
-    padding: 20px 24px;
-    background: var(--btn-bg);
-    border-radius: 24px;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
     text-decoration: none;
-    color: var(--btn-text);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: var(--text-primary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover Spotlight Glow effect on cards */
+.link-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .link-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    background: var(--card-hover-bg);
+    border-color: var(--card-hover-border);
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+}
+
+.link-card:hover::before {
+    opacity: 1;
 }
 
 .link-card .icon {
-    width: 26px;
-    height: 26px;
-    color: var(--btn-text);
-    margin-right: 18px;
+    width: 24px;
+    height: 24px;
+    color: var(--text-primary);
+    margin-right: 20px;
     flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1; /* Above the glow */
 }
 
 .link-card .icon svg {
     width: 100%;
     height: 100%;
+    opacity: 0.9;
 }
 
 .link-card .text-content {
     flex-grow: 1;
     text-align: left;
+    z-index: 1; /* Above the glow */
 }
 
 .link-card .label {
     display: block;
-    font-weight: 700;
-    font-size: 1.15rem;
+    font-weight: 500;
+    font-size: 1.05rem;
     margin-bottom: 4px;
-    color: var(--btn-text);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
 }
 
 .link-card .sub {
     display: block;
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-secondary);
     font-weight: 400;
 }
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
     body {
-        padding: 20px 10px;
+        padding: 40px 16px;
     }
-    #app-container {
-        padding: 30px 15px;
-        border-radius: 24px;
-    }
-    .title { font-size: 1.7rem; }
+    .title { font-size: 1.6rem; }
     .subtitle { font-size: 0.95rem; }
+    .link-card {
+        padding: 16px;
+    }
 }
